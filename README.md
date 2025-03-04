@@ -1,84 +1,62 @@
-# README: Ackermann Steering and Pure Pursuit Path Tracking
+# Ackermann Steering & Pure Pursuit Simulation
 
-## Introduction
-This project simulates a race car in PyBullet using **Ackermann Steering** and **Pure Pursuit Path Tracking** to follow a figure-eight trajectory. The simulation includes real-time control of the vehicle's steering and velocity while drawing its path.
+This project simulates an Ackermann steering model combined with a Pure Pursuit path-following algorithm using PyBullet.
 
-## Requirements
-Ensure you have the necessary Python packages installed:
-```bash
+## Features
+- Simulates a vehicle with realistic Ackermann steering.
+- Uses the Pure Pursuit algorithm to follow a figure-eight trajectory.
+- Visualizes waypoints, the vehicle path, and lookahead points.
+
+## Installation
+Ensure you have Python installed, then install the required dependencies:
+
+```sh
 pip install pybullet numpy
 ```
 
-## Ackermann Steering
-Ackermann steering geometry ensures that all four wheels of a vehicle follow circular paths with a common center. The steering angles for the inner and outer wheels are calculated using:
-
-### Formulas:
-- **Turning radius of the inner and outer wheels:**
-  \[
-  R_{\text{inner}} = \frac{L}{\tan(|\delta|)}
-  \]
-  \[
-  R_{\text{outer}} = R_{\text{inner}} \pm \text{track width}
-  \]
-  where:
-  - \(L\) is the wheelbase (distance between front and rear axle)
-  - \(\delta\) is the steering angle
-  - \(\text{track width}\) is the distance between left and right wheels
-
-- **Individual steering angles for front wheels:**
-  \[
-  \delta_{\text{inner}} = \tan^{-1}\left(\frac{L}{R_{\text{inner}}}\right)
-  \]
-  \[
-  \delta_{\text{outer}} = \tan^{-1}\left(\frac{L}{R_{\text{outer}}}\right)
-  \]
-
-- **Wheel velocities (to maintain correct turning ratio):**
-  \[
-  v_{\text{inner}} = v \times \frac{R_{\text{inner}}}{R_{\text{inner}} + \text{track width}}
-  \]
-  \[
-  v_{\text{outer}} = v \times \frac{R_{\text{outer}}}{R_{\text{outer}} + \text{track width}}
-  \]
-
-## Pure Pursuit Algorithm
-The **Pure Pursuit** controller determines the steering angle required to follow a given path by choosing a look-ahead point and computing the turning radius needed to reach it.
-
-### Steps:
-1. Find the closest waypoint to the vehicle's position.
-2. Locate a **look-ahead point** at a specified distance ahead of the vehicle.
-3. Compute the radius \(R\) of the circle passing through the vehicle and look-ahead point:
-   \[
-   R = \frac{x^2 + y^2}{2y}
-   \]
-   where \((x, y)\) is the look-ahead point in the vehicle's coordinate frame.
-4. Calculate the required steering angle:
-   \[
-   \delta = \tan^{-1}\left(\frac{L}{R}\right)
-   \]
-
-## Implementation in PyBullet
-- The **car's steering** is controlled using PyBullet’s `setJointMotorControl2()` function.
-- The **figure-eight trajectory** is generated using a Lissajous curve.
-- The **vehicle follows the trajectory** by computing steering angles dynamically and adjusting wheel velocities.
-
 ## Running the Simulation
-Execute the script with:
-```bash
+Run the following command:
+
+```sh
 python simulation.py
 ```
 
-## Visualization
-- **Waypoints** are drawn in blue.
-- **Look-ahead points** are highlighted in red.
-- **The vehicle’s path trace** is shown in yellow.
+## Mathematical Background
 
-## Future Improvements
-- Implement PID control for smoother tracking.
-- Add obstacles and collision avoidance.
-- Improve camera view to track the vehicle dynamically.
+### Ackermann Steering Model
+Ackermann steering ensures that all wheels follow a circular path with different turning radii. The inner and outer wheels turn at different angles to minimize tire slip.
+
+#### Steering Angle Computation
+$$\delta_{inner} = \tan^{-1}\left(\frac{L}{R_{inner}}\right)$$
+$$\delta_{outer} = \tan^{-1}\left(\frac{L}{R_{outer}}\right)$$
+where:
+- \( L \) is the wheelbase
+- \( R_{inner} \) and \( R_{outer} \) are the inner and outer turning radii
+
+#### Turning Radius
+$$ R_{inner} = \frac{L}{\tan(|\delta|)} $$
+$$ R_{outer} = R_{inner} \pm track\_width $$
+
+### Pure Pursuit Algorithm
+Pure Pursuit calculates the required steering angle to follow a given path based on a look-ahead point.
+
+#### Steering Angle Computation
+$$ \gamma = \tan^{-1}\left(\frac{2 L y}{d^2}\right) $$
+where:
+- \( L \) is the wheelbase
+- \( y \) is the perpendicular distance to the look-ahead point
+- \( d \) is the Euclidean distance to the look-ahead point
+
+## File Structure
+```
+.
+├── simulation.py   # Python script for PyBullet simulation
+├── README.md       # Project documentation
+```
 
 ## References
-- Ackermann Steering: https://en.wikipedia.org/wiki/Ackermann_steering_geometry
-- Pure Pursuit: https://www.ri.cmu.edu/pub_files/2000/0/1995_BAE_Following.pdf
+- [Ackermann Steering](https://en.wikipedia.org/wiki/Ackermann_steering_geometry)
+- [Pure Pursuit](https://www.ri.cmu.edu/pub_files/2009/6/PurePursuit.pdf)
 
+## License
+This project is licensed under the MIT License.
