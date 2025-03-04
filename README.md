@@ -1,84 +1,85 @@
-# README: Ackermann Steering and Pure Pursuit Path Tracking
+# Autonomous Vehicle Simulation using PyBullet
 
-## Introduction
-This project simulates a race car in PyBullet using **Ackermann Steering** and **Pure Pursuit Path Tracking** to follow a figure-eight trajectory. The simulation includes real-time control of the vehicle's steering and velocity while drawing its path.
+## Overview
+This project simulates a four-wheel vehicle in PyBullet that follows a figure-eight trajectory using **Ackermann Steering** and **Pure Pursuit Path Tracking**. The goal is to implement realistic vehicle steering and motion control.
 
 ## Requirements
-Ensure you have the necessary Python packages installed:
+Ensure you have the following dependencies installed:
 ```bash
 pip install pybullet numpy
 ```
 
-## Ackermann Steering
-Ackermann steering geometry ensures that all four wheels of a vehicle follow circular paths with a common center. The steering angles for the inner and outer wheels are calculated using:
+## Ackermann Steering Model
+Ackermann steering geometry is used to control the front wheels, ensuring they follow a circular path without slipping.
 
-### Formulas:
-- **Turning radius of the inner and outer wheels:**
-  \[
-  R_{\text{inner}} = \frac{L}{\tan(|\delta|)}
-  \]
-  \[
-  R_{\text{outer}} = R_{\text{inner}} \pm \text{track width}
-  \]
-  where:
-  - \(L\) is the wheelbase (distance between front and rear axle)
-  - \(\delta\) is the steering angle
-  - \(\text{track width}\) is the distance between left and right wheels
+### Equations
+The turning radius \( R \) is given by:
+\[
+R = \frac{L}{\tan(\delta)}
+\]
+where:
+- \( L \) is the wheelbase (distance between front and rear axles)
+- \( \delta \) is the steering angle
 
-- **Individual steering angles for front wheels:**
-  \[
-  \delta_{\text{inner}} = \tan^{-1}\left(\frac{L}{R_{\text{inner}}}\right)
-  \]
-  \[
-  \delta_{\text{outer}} = \tan^{-1}\left(\frac{L}{R_{\text{outer}}}\right)
-  \]
+The inner and outer wheel angles are:
+\[
+\delta_{inner} = \tan^{-1} \left( \frac{L}{R_{inner}} \right)
+\]
+\[
+\delta_{outer} = \tan^{-1} \left( \frac{L}{R_{outer}} \right)
+\]
 
-- **Wheel velocities (to maintain correct turning ratio):**
-  \[
-  v_{\text{inner}} = v \times \frac{R_{\text{inner}}}{R_{\text{inner}} + \text{track width}}
-  \]
-  \[
-  v_{\text{outer}} = v \times \frac{R_{\text{outer}}}{R_{\text{outer}} + \text{track width}}
-  \]
+where:
+\[
+R_{inner} = \frac{L}{\tan(|\delta|)}
+\]
+\[
+R_{outer} = R_{inner} \pm track_{width}
+\]
 
-## Pure Pursuit Algorithm
-The **Pure Pursuit** controller determines the steering angle required to follow a given path by choosing a look-ahead point and computing the turning radius needed to reach it.
+Wheel speeds are adjusted based on the radii:
+\[
+v_{inner} = v \times \frac{R_{inner}}{R_{inner} + track_{width}}
+\]
+\[
+v_{outer} = v \times \frac{R_{outer}}{R_{outer} + track_{width}}
+\]
 
-### Steps:
-1. Find the closest waypoint to the vehicle's position.
-2. Locate a **look-ahead point** at a specified distance ahead of the vehicle.
-3. Compute the radius \(R\) of the circle passing through the vehicle and look-ahead point:
-   \[
-   R = \frac{x^2 + y^2}{2y}
-   \]
-   where \((x, y)\) is the look-ahead point in the vehicle's coordinate frame.
-4. Calculate the required steering angle:
-   \[
-   \delta = \tan^{-1}\left(\frac{L}{R}\right)
-   \]
+## Pure Pursuit Path Tracking
+Pure Pursuit is a geometric path-tracking algorithm that determines the required steering angle to reach a **look-ahead point** on the trajectory.
 
-## Implementation in PyBullet
-- The **car's steering** is controlled using PyBullet’s `setJointMotorControl2()` function.
-- The **figure-eight trajectory** is generated using a Lissajous curve.
-- The **vehicle follows the trajectory** by computing steering angles dynamically and adjusting wheel velocities.
+### Steering Angle Calculation
+Given the vehicle's current position \((x, y)\) and look-ahead point \((x_{LA}, y_{LA})\), we compute:
 
-## Running the Simulation
-Execute the script with:
+1. The local coordinates:
+\[
+x' = (x_{LA} - x) \cos(-\theta) - (y_{LA} - y) \sin(-\theta)
+\]
+\[
+y' = (x_{LA} - x) \sin(-\theta) + (y_{LA} - y) \cos(-\theta)
+\]
+where \( \theta \) is the vehicle's yaw angle.
+
+2. The look-ahead radius:
+\[
+R = \frac{x'^2 + y'^2}{2y'}
+\]
+
+3. The required steering angle:
+\[
+\delta = \tan^{-1} \left( \frac{L}{R} \right)
+\]
+
+## Simulation
+To run the simulation, execute:
 ```bash
 python simulation.py
 ```
 
-## Visualization
-- **Waypoints** are drawn in blue.
-- **Look-ahead points** are highlighted in red.
-- **The vehicle’s path trace** is shown in yellow.
+### Features:
+- **Real-time trajectory tracking** with debug lines
+- **Smooth vehicle steering** using Ackermann geometry
+- **Pure Pursuit algorithm** for accurate path following
 
-## Future Improvements
-- Implement PID control for smoother tracking.
-- Add obstacles and collision avoidance.
-- Improve camera view to track the vehicle dynamically.
-
-## References
-- Ackermann Steering: https://en.wikipedia.org/wiki/Ackermann_steering_geometry
-- Pure Pursuit: https://www.ri.cmu.edu/pub_files/2000/0/1995_BAE_Following.pdf
-
+## Acknowledgments
+This implementation is inspired by autonomous vehicle motion control techniques used in robotics and self-driving cars.
