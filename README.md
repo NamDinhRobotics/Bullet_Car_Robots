@@ -1,4 +1,4 @@
-# Ackermann Steering & Pure Pursuit Simulation
+# Ackermann Steering & Pure Pursuit Using Bullet Simulator
 
 This project simulates an Ackermann steering model combined with a Pure Pursuit path-following algorithm using PyBullet.
 ![image](eight_track.png)
