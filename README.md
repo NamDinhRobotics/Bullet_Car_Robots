@@ -28,7 +28,7 @@ Ackermann steering ensures that all wheels follow a circular path with different
 
 #### Steering Angle Computation
 $$\delta_{inner} = \tan^{-1}\left(\frac{L}{R_{inner}}\right)$$ <br />
-$$\delta_{outer} = \tan^{-1}\left(\frac{L}{R_{outer}}\right)$$
+$$\delta_{outer} = \tan^{-1}\left(\frac{L}{R_{outer}}\right)$$ <br />
 where:
 - $$L$$ is the wheelbase
 - $$R_{inner}$$ and $$R_{outer}$$ are the inner and outer turning radii
