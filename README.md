@@ -27,7 +27,7 @@ python simulation.py
 Ackermann steering ensures that all wheels follow a circular path with different turning radii. The inner and outer wheels turn at different angles to minimize tire slip.
 
 #### Steering Angle Computation
-$$\delta_{inner} = \tan^{-1}\left(\frac{L}{R_{inner}}\right)$$
+$$\delta_{inner} = \tan^{-1}\left(\frac{L}{R_{inner}}\right)$$ <br />
 $$\delta_{outer} = \tan^{-1}\left(\frac{L}{R_{outer}}\right)$$
 where:
 - $$L$$ is the wheelbase
