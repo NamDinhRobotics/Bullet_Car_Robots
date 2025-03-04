@@ -35,7 +35,7 @@ where:
 
 #### Turning Radius
 $$ R_{inner} = \frac{L}{\tan(|\delta|)} $$
-$$ R_{outer} = R_{inner} \pm track\_width $$
+$$ R_{outer} = R_{inner} \pm track_width $$
 
 ### Pure Pursuit Algorithm
 Pure Pursuit calculates the required steering angle to follow a given path based on a look-ahead point.
