@@ -30,8 +30,8 @@ Ackermann steering ensures that all wheels follow a circular path with different
 $$\delta_{inner} = \tan^{-1}\left(\frac{L}{R_{inner}}\right)$$
 $$\delta_{outer} = \tan^{-1}\left(\frac{L}{R_{outer}}\right)$$
 where:
-- \( L \) is the wheelbase
-- \( R_{inner} \) and \( R_{outer} \) are the inner and outer turning radii
+- $ L $ is the wheelbase
+- $R_{inner}$ and $R_{outer}$ are the inner and outer turning radii
 
 #### Turning Radius
 $$ R_{inner} = \frac{L}{\tan(|\delta|)} $$
@@ -43,9 +43,9 @@ Pure Pursuit calculates the required steering angle to follow a given path based
 #### Steering Angle Computation
 $$ \gamma = \tan^{-1}\left(\frac{2 L y}{d^2}\right) $$
 where:
-- \( L \) is the wheelbase
-- \( y \) is the perpendicular distance to the look-ahead point
-- \( d \) is the Euclidean distance to the look-ahead point
+- $L$ is the wheelbase
+- $y$ is the perpendicular distance to the look-ahead point
+- $d$ is the Euclidean distance to the look-ahead point
 
 ## File Structure
 ```
