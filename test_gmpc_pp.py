@@ -13,7 +13,7 @@ if __name__ == "__main__":
             'start_state': np.array([0, -3, 0]),
             'linear_vel': 5.0,
             'angular_vel': 5.0 / radius,
-            'nTraj': 200,
+            'nTraj': 400,
             'dt': 0.05
         }
     }
@@ -33,12 +33,12 @@ if __name__ == "__main__":
     mpc.set_control_bound(v_min=-10, v_max=10, w_min=-np.pi, w_max=np.pi)  # Set control input bounds
 
     pure_pursuit = PurePursuitController(
-        min_lookahead=0.3,
-        max_lookahead=1.5,
+        min_lookahead=0.5,
+        max_lookahead=1.0,
         wheelbase=car.wheelbase,
-        max_speed=15.0,  # Maximum speed on straight paths
+        max_speed=5.0,  # Maximum speed on straight paths
         min_speed=2.0,  # Minimum speed during sharp turns
-        max_steering_angle=np.pi/6  # Maximum steering angle in radians
+        max_steering_angle=np.pi/4  # Maximum steering angle in radians
     )
 
 

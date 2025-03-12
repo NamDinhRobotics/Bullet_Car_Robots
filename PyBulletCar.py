@@ -23,10 +23,10 @@ class PyBulletCar:
         p.setRealTimeSimulation(1)
         self.plane_id = p.loadURDF("plane.urdf")
         self.car_id = p.loadURDF(urdf_path, basePosition=start_position, baseOrientation=start_orientation)
-        p.changeDynamics(self.plane_id, -1, lateralFriction=0.2)
+        p.changeDynamics(self.plane_id, -1, lateralFriction=0.8)
         wheels = [2, 3, 5, 7]
         for wheel in wheels:
-            p.changeDynamics(self.car_id, wheel, lateralFriction=0.2)
+            p.changeDynamics(self.car_id, wheel, lateralFriction=0.8)
         p.setJointMotorControl2(self.car_id, 4, p.VELOCITY_CONTROL, force=0)
         p.setJointMotorControl2(self.car_id, 6, p.VELOCITY_CONTROL, force=0)
         self.wheel_joints = {"front_left": 2, "front_right": 3, "rear_left": 5, "rear_right": 7}
