@@ -2,7 +2,7 @@
 
 This project simulates an Ackermann steering model combined with a Pure Pursuit path-following algorithm using PyBullet.
 ![image](eight_track.png)
-
+![circle_purepersuit.gif](docs/circle_purepersuit.gif)
 ## Features
 - Simulates a vehicle with realistic Ackermann steering.
 - Uses the Pure Pursuit algorithm to follow a figure-eight trajectory.
