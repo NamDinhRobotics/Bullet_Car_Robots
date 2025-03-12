@@ -18,10 +18,10 @@ planeId = p.loadURDF("plane.urdf")
 car = p.loadURDF("racecar/racecar.urdf", basePosition=[0, -0, 0.1])
 
 # Set friction properties
-p.changeDynamics(planeId, -1, lateralFriction=0.5)
+p.changeDynamics(planeId, -1, lateralFriction=0.1)
 wheels = [2, 3, 5, 7]
 for wheel in wheels:
-    p.changeDynamics(car, wheel, lateralFriction=0.5)
+    p.changeDynamics(car, wheel, lateralFriction=0.1)
 
 # Get wheel joint indices
 wheel_joints = {"front_left": 2, "front_right": 3, "rear_left": 5, "rear_right": 7}

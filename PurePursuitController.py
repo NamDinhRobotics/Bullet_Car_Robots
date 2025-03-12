@@ -1,16 +1,18 @@
 import numpy as np
 import math
 
-
 class PurePursuitController:
-    def __init__(self, lookahead_distance, wheelbase, max_speed, min_speed, max_steering_angle):
-        """Initialize the Pure Pursuit controller with adaptive velocity."""
-        self.lookahead_distance = lookahead_distance
+    def __init__(self, min_lookahead, max_lookahead, wheelbase, max_speed, min_speed, max_steering_angle):
+        """Initialize the Pure Pursuit controller with adaptive velocity and lookahead distance."""
+        self.lookahead_distance = min_lookahead
+        self.min_lookahead = min_lookahead
+        self.max_lookahead = max_lookahead
         self.wheelbase = wheelbase
         self.max_speed = max_speed
         self.min_speed = min_speed
         self.max_steering_angle = max_steering_angle
         self.lookahead_point = None  # To store the lookahead point for visualization
+        self.prev_delta = 0.0  # Previous steering angle, initialized to 0
 
     def find_closest_point(self, current_position, path):
         """Find the closest point on the path to the current position."""
@@ -71,21 +73,34 @@ class PurePursuitController:
         return delta
 
     def compute_control(self, current_state, path):
-        """Compute control inputs (linear and angular velocity) with adaptive speed."""
+        """Compute control inputs (linear and angular velocity) with adaptive speed and lookahead distance."""
+
+        # Extract current state
         current_position = current_state[:2]
         current_heading = current_state[2]
+
+        # Find closest and lookahead points
         closest_point, closest_segment_idx = self.find_closest_point(current_position, path)
         lookahead_point = self.find_lookahead_point(closest_point, closest_segment_idx, path)
-        self.lookahead_point = lookahead_point  # Store for visualization
+        self.lookahead_point = lookahead_point
+
+        # Compute steering angle
         delta = self.compute_steering_angle(current_position, current_heading, lookahead_point)
 
-        # Scale velocity based on steering angle
+        # Scale velocity based on current steering angle (matching C++ logic)
         normalized_steering = abs(delta) / self.max_steering_angle  # 0.0 to 1.0
         speed = self.max_speed * (1.0 - normalized_steering * (1.0 - self.min_speed / self.max_speed))
+        speed = max(speed, self.min_speed)  # Ensure speed is not below min_speed
 
-        # Ensure speed is not lower than the minimum value
-        speed = max(speed, self.min_speed)
+        # Adapt lookahead_distance based on previous steering angle
+        # normalized_steering = abs(delta) / self.max_steering_angle  # 0.0 to 1.0
+        lookahead_distance_tmp = self.max_lookahead * (1.0 - normalized_steering * (1.0 -self.min_lookahead /self.max_lookahead ))
+        self.lookahead_distance = max(lookahead_distance_tmp, self.min_lookahead)
 
-        # Compute angular velocity with the scaled speed
+        # Compute angular velocity
         w = (speed / self.wheelbase) * math.tan(delta)
+
+        # Update previous steering angle for next iteration
+        self.prev_delta = delta
+
         return speed, w
