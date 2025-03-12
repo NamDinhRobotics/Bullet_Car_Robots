@@ -308,8 +308,8 @@ if __name__ == "__main__":
     ref_trajectory_path = traj_generator.get_traj()
     ref_state = ref_trajectory_path[0]
 
-    start_point = [0, -0, 0.0]
-    start_heading = 0
+    start_point = [0, 0, 0.0]
+    start_heading = np.pi/2
     start_orientation = p.getQuaternionFromEuler([0, 0, start_heading])
     car = PyBulletCar("racecar/racecar.urdf", start_point, start_orientation)
 
