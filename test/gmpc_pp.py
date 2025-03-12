@@ -211,6 +211,7 @@ class PurePursuitController:
         self.lookahead_point = lookahead_point  # Store for visualization
         delta = self.compute_steering_angle(current_position, current_heading, lookahead_point)
         v = self.linear_vel
+        # v = 2 * self.linear_vel
         w = (v / self.wheelbase) * math.tan(delta)
         return v, w
 
@@ -291,12 +292,12 @@ class PyBulletCar:
 # Main Simulation Loop
 if __name__ == "__main__":
     # Trajectory configuration for a circular path
-    radius = 5.0
+    radius = 3.0
     traj_config = {
         'type': TrajType.CIRCLE,
         'param': {
             'start_state': np.array([0, -3, 0]),
-            'linear_vel': 10.0,
+            'linear_vel': 5.0,
             'angular_vel': 5.0 / radius,
             'nTraj': 200,
             'dt': 0.05
@@ -330,7 +331,7 @@ if __name__ == "__main__":
                            [0, 0, 1], 2)
 
     # Define the controller selector
-    use_pure_pursuit = True  # Set to False to use Geometric MPC
+    use_pure_pursuit = True  # Set to True to use Pure Pursuit, False to use Geometric MPC
 
     # Simulation loop
     trace_points = []
