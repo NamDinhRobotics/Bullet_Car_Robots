@@ -33,8 +33,8 @@ if __name__ == "__main__":
     mpc.set_control_bound(v_min=-10, v_max=10, w_min=-np.pi, w_max=np.pi)  # Set control input bounds
 
     pure_pursuit = PurePursuitController(
-        min_lookahead=0.5,
-        max_lookahead=1.0,
+        min_lookahead= car.wheelbase + 0.1,
+        max_lookahead=1.5,
         wheelbase=car.wheelbase,
         max_speed=5.0,  # Maximum speed on straight paths
         min_speed=2.0,  # Minimum speed during sharp turns

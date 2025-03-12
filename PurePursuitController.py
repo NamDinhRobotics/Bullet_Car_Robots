@@ -95,6 +95,9 @@ class PurePursuitController:
         # Adapt lookahead_distance based on previous steering angle
         # normalized_steering = abs(delta) / self.max_steering_angle  # 0.0 to 1.0
         lookahead_distance_tmp = self.max_lookahead * (1.0 - normalized_steering * (1.0 -self.min_lookahead /self.max_lookahead ))
+        # d_min >= v* sqrt(2)
+        # d_min = speed * np.sqrt(2)
+        # self.lookahead_distance = max(lookahead_distance_tmp, d_min)
         self.lookahead_distance = max(lookahead_distance_tmp, self.min_lookahead)
 
         # Compute angular velocity
